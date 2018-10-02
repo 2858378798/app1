@@ -1,0 +1,36 @@
+<!--loading hidden="{{loadingHide}}">
+  {{loadingText}}
+</loading-->
+<!--pages/home/home.wxml-->
+<view class="IndexHome">
+  <image src="../../image/2.jpg" style="width:100%;"></image>
+</view>
+
+
+
+<view class="IndexList">
+  <view bindtap="callmeTap">
+    <image src="../../image/tel.png" class="telIco" mode="widthFix"></image>
+    <text class="tel" bindtap="teltoUs" style="font-size:30rpx;">电话：{{tel}}（点击拨号）</text>
+  </view>
+  <view>
+    <image src="../../image/weixin.png" class="weixinIco" mode="widthFix"></image>
+    <text class="map" style="font-size:30rpx;">公众号：{{wechat}}</text>
+  </view>
+  <!--view>
+    <image src="../../image/email.png" class="eIco" mode="widthFix"></image>
+    <text class="email" style="font-size:30rpx;">公众号：laosan0070@163.com </text>
+  </view-->
+  <view>
+    <image src="../../image/map.png" class="mapIco" mode="widthFix"></image>
+    <text class="map" bindtap="" style="font-size:30rpx;">{{address}}</text>
+  </view>
+  <view  class="IndexHome" data-type="公众号" style="margin-top:46rpx;">
+        <image mode="widthFix" src="{{qrcode}}" style="width:50%;"></image>
+        <view  style="text-align:center;border-bottom:none;line-height:18px;font-size:28rpx;">公众号二维码</view>
+  </view>
+</view>
+
+<view class="footer">
+  @2018 斯贝克 版权所有
+</view>

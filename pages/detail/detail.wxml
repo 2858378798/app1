@@ -1,0 +1,33 @@
+<import src="../../wxParse/wxParse.wxml"/> 
+<view class="wx-view_KHAWVZ" data-c_e_id="wx_viewb7dbd52e">
+    <swiper autoplay="True" class="wx-swiper_Mn3JMs" data-c_e_id="wx_swiper43d9f094" indicator-dots="True" lower-threshold="50">
+        <swiper-item class="c-full wx-swiper-item_F6vCx8" data-c_e_id="wx_swiper_item015a5cd2">
+            <image class="wx-image_HsAX8s2" data-c_e_id="wx_image194006a3" mode="aspectFill" src="{{cover_img}}" style="background-image: url({{cover_img}}); background-size: cover; background-position: center center; background-repeat: no-repeat; "/>
+        </swiper-item>
+        <!--swiper-item class="c-full wx-swiper-item_qGeJVI" data-c_e_id="wx_swiper_item1d2f7146">
+            <image class="wx-image_HsAX8s2" data-c_e_id="wx_image735f46d5" mode="aspectFill" src="http://imgcdn.guoku.com/images/310/55ed0775d104b851e101d6d7ef658513.jpg" style="background-image: url(http://imgcdn.guoku.com/images/310/55ed0775d104b851e101d6d7ef658513.jpg); background-size: cover; background-position: center center; background-repeat: no-repeat; "/>
+        </swiper-item-->
+    </swiper>
+    <text class="c-block wx-text_V55JEt" style="margin-bottom:20px;">{{title}}</text>
+    <text class="c-block wx-text_V55JEt"  style="font-size:13px;color:#008000;margin-top:0px;margin-bottom:10px;">型号：{{model}}</text>
+    <text class="c-block wx-text_V55JEt"  style="font-size:13px;color:#008000;margin-top:0px;margin-bottom:30px;"><text style="padding-right:{{usage_mode != '' ? '15px' : '0px'}};">数量：{{pro_number}}</text> <text wx:if="{{usage_mode != ''}}">应用方式：{{usage_mode}}</text></text>
+
+    <view class="wx-view_Ipiy3Y"  style="margin-bottom:20px;padding-bottom:10px;padding-right:8px;">
+        <!--navigator class="wx-navigator_8s8V9p" data-c_e_id="wx_navigator66f8813b" hover-class="navigator-hover">
+            <text class="c-block wx-text_EPMInA" data-c_e_id="wx_text50749bcb">￥167.00 去购买</text>
+        </navigator-->
+        <view class="wx-view_q8yXI9">
+            <image class="wx-image_YAG40m" mode="aspectFit" data-type="{{is_like}}" id="{{id}}" bindtap="clickLike" 
+            src="{{like_icon}}" 
+            style=" background-size: contain; background-position: center center; background-repeat: no-repeat; "/>
+        </view>
+        <view class="wx-view_q8yXI9" data-c_e_id="wx_view904ff1ed" style="margin-left:100rpx;">
+        <image class="wx-image_YAG40m" mode="aspectFit" data-type="{{is_favorite}}" id="{{id}}" bindtap="clickFavorite" 
+        src="{{favorite_icon}}" style=" background-size: contain; background-position: center center; background-repeat: no-repeat; "/>
+        </view>
+    </view>
+    
+    <view class="wxParse" style="padding:20px 10px;margin:10px;border-top:1px solid #ccc;">
+        <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+    </view>
+</view>

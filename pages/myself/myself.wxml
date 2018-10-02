@@ -1,0 +1,35 @@
+<view  >
+  <view  bindtap="bindViewTap" class="userinfo" style="width:{{width}}px;height:{{height/3}}px;background-size:100%;background-repeat:space">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover" style="margin-top:{{height/11}}px"></image>
+     <text class="usName">{{userInfo.nickName}}</text>
+     <!--<text class="usRegin" wx:if="{{userInfo.gender ==1}}">{{userInfo.province}}{{userInfo.city}}/男</text>
+      <text class="usRegin" wx:else>{{userInfo.province}}{{userInfo.city}}/女</text>-->
+  </view>
+ 
+  <view class="info_list">
+    <block wx:for="{{userListInfo}}" wx:key="index">
+      <navigator url="{{item.link}}" bindtap="toRegister" open-type="switchTab" wx:if='{{item.text=="完善信息"}}'>
+        <view class="weui_cell">
+            <view class="weui_cell_hd"><image src="{{item.icon}}"></image></view>
+            <view class="weui_cell_bd">
+                <view class="weui_cell_bd_p"> {{item.text}} </view>
+            </view>
+            
+            <image class="with_arrow" src="{{rightimg}}"></image>
+        </view>
+      </navigator>
+      <navigator url="{{item.link}}"  open-type="switchTab" wx:if='{{item.text!="完善信息"}}'>
+        <view class="weui_cell"  id="{{item.id}}" data-index="{{item.id}}" bindtap="userinfo_itemType">
+            <view class="weui_cell_hd"><image src="{{item.icon}}"></image></view>
+            <view class="weui_cell_bd">
+                <view class="weui_cell_bd_p"> {{item.text}} </view>
+            </view>
+            
+            <image class="with_arrow" src="{{rightimg}}"></image>
+        </view>
+      </navigator>
+    </block>
+  </view>
+</view>
+
+  

@@ -1,0 +1,75 @@
+/* pages/home/home.wxss */
+.IndexHome{
+  width: 100%;
+  display: block;
+  height: 500rpx;
+  overflow: hidden;
+  text-align: center
+}
+.img{
+  width: 55%; margin: 0 auto; padding: 60rpx 0 0 0;
+}
+.IndexList{
+  width: 100%;
+  display: block;
+  margin-top: 40rpx;
+}
+.IndexList view{
+    border-bottom: 1px solid #F5F5F5;
+    width: 84%;
+    display:  block;
+    margin: 0 8%;
+    color: #333;
+    line-height: 100rpx
+}
+.IndexList image.telIco{
+  width: 3%;
+  margin-right: 15rpx
+}
+.IndexList image.weixinIco{
+  width: 4%;
+  margin-right: 15rpx
+}
+.IndexList image.eIco{
+  width: 4%;
+  margin-right: 15rpx
+}
+.IndexList image.mapIco{
+  width: 3%;
+  margin-right: 15rpx
+}
+
+.index_box_bd{background-color:#fff;margin-bottom:10px;overflow:hiden;}
+.index_box_tit{margin:5px 0;text-align:center;}
+.index_box_tit text{font-size:18px;font-weight:700;line-height: 32px;height:32px;}
+.index_box_imglist{width:98%;padding:0 1%;overflow:hiden;}
+.index_box_imglist .index_anli_v{width:31.333333%;float:left;margin:0 1%;}
+.index_box_imglist .index_anli_v image{display: block;width:100%;}
+.index_box_imglist .index_anli_v text{font-size:28rpx;display: block;height:32px;line-height: 32px;text-align:center;overflow: hidden;color:#8c8c8c;}
+
+.index_box_about{padding:1% 2% 2% 2%;overflow:hiden;}
+.index_box_about text{color:#8c8c8c;font-size:14px;line-height: 28px;}
+
+.index_box_code{width:98%;padding:0 1%;}
+.index_box_code .index_code_v{width:48%;float:left;margin:0 1%;}
+.index_box_code .index_code_v image{display: block;width:100%;}
+.index_box_code .index_code_v text{font-size:28rpx;display: block;height:32px;line-height: 32px;text-align:center;overflow: hidden;color:#8c8c8c;}
+
+.index_box_contact{padding:1% 1% 10px 1%;overflow:hiden;text-align:center;}
+.index_box_contact_bd{padding:10px 5px;margin-bottom:10px;border:1px solid #ccc;overflow:hidden;}
+.index_box_contact .tit{margin-top:10px;line-height:32px;font-size:14px;font-weight:800;}
+.index_box_contact .tit_text{color:#8c8c8c;font-size:12px;min-height:48px;line-height:24px;}
+.index_box_contact .tit_img{margin:10px 0;width:100%;}
+.index_box_contact .tit_img image{width:40px;height:40px;}
+.index_box_phone{float:left;width:47.8%;margin:1%;}
+.index_box_phone .tit_text{line-height: 48px;font-size:16px;}
+
+.index_box_map{float:left;width:47.8%;margin:1%;}
+.footer{line-height: 34px;text-align: center;color:#8c8c8c;}
+.footer{ 
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  color: #C6C6C6;
+  padding-top: 30rpx
+  }
