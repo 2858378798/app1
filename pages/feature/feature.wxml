@@ -9,14 +9,17 @@
     </view>
 </view>
 <scroll-view class="c-minheight" lower-threshold="50" scroll-y="True" style="overflow-x: hidden; overflow-y: auto; margin-top:50px;" upper-threshold="50">
-    <view bindtap="tap_de01fdb6" class="listitemWrap" wx:for="{{goods}}" wx:key="idx" wx:for-item="itemName">
+    <view class="listitemWrap" wx:for="{{goods}}" wx:key="idx" wx:for-item="itemName" style="display:{{hasInfo}}">
         <view class="image_thumbView" data-index="{{itemName.id}}" id="{{itemName.id}}" bindtap="userinfo_item">
             <navigator class="image_thumbView" data-c_e_id="wx_navigator{{itemName.id}}" hover-class="navigator-hover" url="../detail/detail?id={{itemName.id}}">
-                <image class="image_thumb" data-c_e_id="wx_image{{itemName.id}}" mode="aspectFit" src="{{itemName.img}}"/>
+                <image class="image_thumb" data-c_e_id="wx_image{{itemName.id}}" mode="aspectFill" src="{{itemName.img}}"/>
             </navigator>
         </view>
         <text class="text_description">{{itemName.title}}</text>
-        <text class="text_description" style="font-size:11px;color:#008000;margin-bottom:5px;">型号：{{itemName.model}}</text>
+        <text class="text_description" style="font-size:11px;color:#008000;margin-bottom:5px;">
+        <text style="font-size:11px;color:#008000;padding-right:15px;" wx:if="{{itemName.pro_number != ''}}">全频型号：{{itemName.model}}</text>
+        <text wx:if="{{itemName.bass_model}}" style="font-size:11px;color:#008000;">低音型号：{{itemName.bass_model}}</text>
+        </text>
         <text class="text_description" style="font-size:11px;color:#008000;">
         <text style="font-size:11px;color:#008000;padding-right:15px;" wx:if="{{itemName.pro_number != ''}}">数量：{{itemName.pro_number}}</text>
         <text style="font-size:11px;color:#008000;" wx:if="{{itemName.usage_mode != ''}}">应用方式：{{itemName.usage_mode}}</text>
@@ -34,6 +37,11 @@
             </view>
             <!--text class="listitem_creattime" data-c_e_id="wx_text8c8804b3">2016.10.29</text-->
         </view>
+    </view>
+    <view class="listitemWrap" wx:if='{{noInfo}}'>
+      <view class="start" style='width:90%;margin:190px auto;text-align:center;display:block;'>
+        <text class="warn" style='margin:0;'>暂无相关数据~~~</text>
+      </view>
     </view>
     <!--view class="listitemWrap" data-c_e_id="wx_view964f0a2d">
         <navigator class="image_thumbView" data-c_e_id="wx_navigatore0bcb5f1" hover-class="navigator-hover" url="../detail/detail">

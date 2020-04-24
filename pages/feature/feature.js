@@ -18,7 +18,9 @@ Page({
   data: {
     goods: null,
     likeActive: false,
-    favoriteActive: true
+    favoriteActive: true,
+    hasInfo: 'block',
+    noInfo: false
   },
 
   /**
@@ -92,8 +94,11 @@ Page({
       })
     }
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
+    console.log(token);
+    console.log(app.globalData.host + '/public/api/portal/products/my?type=' + typeId + '&openid=' + openId);
     wx.request({
-      url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/my?type=' + typeId,
+      url: app.globalData.host + '/public/api/portal/products/my?type=' + typeId + '&openid=' + openId,
       header: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -102,58 +107,94 @@ Page({
       },
       success: function (res) {
         console.log(res);
-        var goods = [];
-        $.each(res.data.data, function (i, d) {
-          //console.log(d);
-          var data = {
-            id: [],
-            title: [],
-            img: [],
-            likenum: [],
-            favoritenum: [],
-            is_like: [],
-            is_favorite: [],
-            like_type: [],
-            favorite_type: [],
-            is_like_icon: [],
-            is_favorite_icon: [],
-            model: [],
-            pro_number: [],
-            usage_mode: [],
-          };
-          var is_like_icon = '';
-          var is_favorite_icon = '';
-          if (res.data.data[i].is_like == 1) {
-            is_like_icon = '../../images/like-fill.png';
-          } else {
-            is_like_icon = '../../images/like.png';
+        if(res){
+          var goods = [];
+          if (res.data.code != 1) {
+            // wx.showModal({
+            //   title: res.data.msg,
+            //   showCancel: false,
+            //   content: '',
+            // });
+            that.setData({
+              'noInfo': true,
+              'hasInfo': 'none'
+            });
+            console.log(that.data.noInfo);
           }
-          if (res.data.data[i].is_favorite == 1) {
-            is_favorite_icon = '../../images/shouc-fill.png';
-          } else {
-            is_favorite_icon = '../../images/shouc.png';
-          }
-          data.title.push(res.data.data[i].post_title);
-          data.id.push(res.data.data[i].id);
-          data.img.push(res.data.data[i].thumbnail);
-          data.likenum.push(res.data.data[i].post_like);
-          data.favoritenum.push(res.data.data[i].post_favorites);
-          data.is_like.push(res.data.data[i].is_like);
-          data.is_favorite.push(res.data.data[i].is_favorite);
-          data.like_type.push(res.data.data[i].is_like);
-          data.favorite_type.push(res.data.data[i].is_favorite);
-          data.model.push(res.data.data[i].post_model);
-          data.pro_number.push(res.data.data[i].pro_number);
-          data.usage_mode.push(res.data.data[i].usage_mode);
+          $.each(res.data.data, function (i, d) {
+            //console.log(d);
+            var data = {
+              id: [],
+              title: [],
+              img: [],
+              likenum: [],
+              favoritenum: [],
+              is_like: [],
+              is_favorite: [],
+              like_type: [],
+              favorite_type: [],
+              is_like_icon: [],
+              is_favorite_icon: [],
+              model: [],
+              bass_model: [],
+              pro_number: [],
+              usage_mode: [],
+            };
+            var is_like_icon = '';
+            var is_favorite_icon = '';
+            if (res.data.data[i].is_like == 1) {
+              is_like_icon = '../../images/like-fill.png';
+            } else {
+              is_like_icon = '../../images/like.png';
+            }
+            if (res.data.data[i].is_favorite == 1) {
+              is_favorite_icon = '../../images/shouc-fill.png';
+            } else {
+              is_favorite_icon = '../../images/shouc.png';
+            }
+            data.title.push(res.data.data[i].post_title);
+            data.id.push(res.data.data[i].id);
+            if (res.data.data[i].thumbnail.indexOf("https://") == -1) {
+              res.data.data[i].thumbnail = "https://t.ungerms.cn/public/upload/" + res.data.data[i].thumbnail;
+            }
+            data.img.push(res.data.data[i].thumbnail);
+            data.likenum.push(res.data.data[i].post_like);
+            data.favoritenum.push(res.data.data[i].post_favorites);
+            data.is_like.push(res.data.data[i].is_like);
+            data.is_favorite.push(res.data.data[i].is_favorite);
+            data.like_type.push(res.data.data[i].is_like);
+            data.favorite_type.push(res.data.data[i].is_favorite);
+            data.model.push(res.data.data[i].post_model);
+            data.pro_number.push(res.data.data[i].pro_number);
+            data.usage_mode.push(res.data.data[i].usage_mode);
 
-          data.is_like_icon.push(is_like_icon);
-          data.is_favorite_icon.push(is_favorite_icon);
-          goods.push(data);
-        })
-        that.setData({
-          'goods': goods
-        })
-        console.log(that.data.goods);
+            data.is_like_icon.push(is_like_icon);
+            data.is_favorite_icon.push(is_favorite_icon);
+            goods.push(data);
+          })
+          that.setData({
+            'goods': goods
+          })
+          if(goods.length != 0){
+            that.setData({
+              'noInfo': false,
+              'hasInfo': 'block'
+            })
+          }else{
+            that.setData({
+              'noInfo': true,
+              'hasInfo': 'none'
+            })
+          }
+          console.log(goods);
+          console.log(that.data.noInfo);
+          console.log(that.data.goods);
+        }else{
+          that.setData({
+            'noInfo': true,
+            'hasInfo': 'none'
+          })
+        }
       }
     })
   },
@@ -163,9 +204,10 @@ Page({
       'likeActive': false,
       'favoriteActive': true
     });
-    var token = (wx.getStorageSync('token'));
+    var token = wx.getStorageSync('token');
+    var openId = (wx.getStorageSync('openId'));
     wx.request({
-      url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/my?type=1',
+      url: app.globalData.host + '/public/api/portal/products/my?type=1' + '&openid=' + openId,
       header: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -175,6 +217,18 @@ Page({
       success: function (res) {
         console.log(res)
         var goods = [];
+        if (res.data.code != 1) {
+          // wx.showModal({
+          //   title: res.data.msg,
+          //   showCancel: false,
+          //   content: '',
+          // });
+          that.setData({
+            'noInfo': true,
+            'hasInfo': 'none'
+          })
+          console.log(that.data.noInfo);
+        }
         $.each(res.data.data, function (i, d) {
           //console.log(d);
           var data = {
@@ -207,6 +261,9 @@ Page({
           }
           data.title.push(res.data.data[i].post_title);
           data.id.push(res.data.data[i].id);
+          if (res.data.data[i].thumbnail.indexOf("https://") == -1) {
+            res.data.data[i].thumbnail = "https://t.ungerms.cn/public/upload/" + res.data.data[i].thumbnail;
+          }
           data.img.push(res.data.data[i].thumbnail);
           data.likenum.push(res.data.data[i].post_like);
           data.favoritenum.push(res.data.data[i].post_favorites);
@@ -225,6 +282,19 @@ Page({
         that.setData({
           'goods': goods
         })
+        console.log(goods);
+        if (goods.length != 0){
+          that.setData({
+            'noInfo': false,
+            'hasInfo': 'block'
+          })
+        }else{
+          that.setData({
+            'noInfo': true,
+            'hasInfo': 'none'
+          })
+        }
+        console.log(that.data.noInfo);
         console.log(that.data.goods);
       }
     })
@@ -236,8 +306,9 @@ Page({
       'favoriteActive': false
     });
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     wx.request({
-      url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/my?type=2',
+      url: app.globalData.host + '/public/api/portal/products/my?type=2' + '&openid=' + openId,
       header: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -245,8 +316,19 @@ Page({
         'XX-Device-Type': 'wxapp',
       },
       success: function (res) {
-        //console.log(res)
+        console.log(res)
         var goods = [];
+        if (res.data.code != 1){
+          wx.showModal({
+            title: res.data.msg,
+            showCancel: false,
+            content: '',
+          });
+          that.setData({
+            'noInfo': true,
+            'hasInfo': 'none'
+          })
+        }
         $.each(res.data.data, function (i, d) {
           //console.log(d);
           var data = {
@@ -279,6 +361,9 @@ Page({
           }
           data.title.push(res.data.data[i].post_title);
           data.id.push(res.data.data[i].id);
+          if (res.data.data[i].thumbnail.indexOf("https://") == -1) {
+            res.data.data[i].thumbnail = "https://t.ungerms.cn/public/upload/" + res.data.data[i].thumbnail;
+          }
           data.img.push(res.data.data[i].thumbnail);
           data.likenum.push(res.data.data[i].post_like);
           data.favoritenum.push(res.data.data[i].post_favorites);
@@ -297,6 +382,17 @@ Page({
         that.setData({
           'goods': goods
         })
+        if (goods.length != 0) {
+          that.setData({
+            'noInfo': false,
+            'hasInfo': 'block'
+          })
+        } else {
+          that.setData({
+            'noInfo': true,
+            'hasInfo': 'none'
+          })
+        }
         console.log(that.data.goods);
       }
     })
@@ -314,11 +410,12 @@ Page({
     var ret = [];
     var error = 0;
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     if (parseInt(id_type) == 0) {
       id_type = 1;
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/doLike?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/doLike?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -352,7 +449,7 @@ Page({
       id_type = 0;
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/cancelLike?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/cancelLike?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -391,12 +488,13 @@ Page({
     var id_type = e.target.dataset.type;
     var id = e.currentTarget.id;
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     console.log(token);
     if (parseInt(id_type) == 1) {
       id_type = 0;
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/cancelFavorite?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/cancelFavorite?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -424,7 +522,7 @@ Page({
       var that = this;
       id_type = 1;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/doFavorite?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/doFavorite?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',

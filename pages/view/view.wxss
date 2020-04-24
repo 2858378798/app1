@@ -16,9 +16,9 @@
 }
 .IndexList view{
     border-bottom: 1px solid #F5F5F5;
-    width: 84%;
+    width: 90%;
     display:  block;
-    margin: 0 8%;
+    margin: 0 0 1% 1%;
     color: #333;
     line-height: 100rpx
 }

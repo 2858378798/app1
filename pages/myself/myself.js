@@ -20,6 +20,11 @@ Page({
         text: '完善信息',
         link: '../login/login',
 
+      }, {
+        icon: '/images/21.png',
+        text: '联系我们',
+        link: '../view/view',
+
       }]
   },
   onLoad: function () {  

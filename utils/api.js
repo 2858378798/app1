@@ -2,13 +2,13 @@ import "./date";
 
 var app = getApp();
 
-var host = "https://wechat.se-audiotechnik.pro/public";
+var host = app.globalData.host;
 
 var tryingLogin = false;
 
 module.exports = {
     HOST: host,
-    API_ROOT: host + '/api/',
+  API_ROOT: host + '/public/api',
     API_VERSION: '1.1.0',
     post(options) {
       console.log(options);
@@ -100,26 +100,30 @@ module.exports = {
             complete: options.complete ? options.complete : null
         });
     },
-    login: function () {
-      if (app.globalData.userInfo == null){
+    login: function (userinfo) {
+      console.log(userinfo);
+      
+        var openId = (wx.getStorageSync('openId'));
+        if (!openId){
         wx.login({
             success: loginRes => {
                 console.log(loginRes);
                 if (loginRes.code) {
-                    wx.getUserInfo({
-                        withCredentials: true,
-                        success: res => {
-                            console.log(res);
-                          app.globalData.userInfo = res.userInfo
-                            wx.setStorageSync('hasGetUserInfo', '1');
+                    // wx.getUserInfo({
+                        // withCredentials: true,
+                        // success: res => {
+                        //     console.log(res);
+                        //   app.globalData.userInfo = res.userInfo
+                        //     wx.setStorageSync('hasGetUserInfo', '1');
                             this.post({
-                              url: 'https://wechat.se-audiotechnik.pro/public/api/wxapp/public/login',
+                              url: '/wxapp/public/login',
                                 data: {
                                     code: loginRes.code,
-                                    encrypted_data: res.encryptedData,
-                                    iv: res.iv,
-                                    raw_data: res.rawData,
-                                    signature: res.signature,
+                                    is_code: 1,
+                                    // encrypted_data: res.encryptedData,
+                                    // iv: res.iv,
+                                    // raw_data: res.rawData,
+                                    // signature: res.signature,
                                 },
                                 success: data => {
                                   console.log(data);
@@ -132,13 +136,13 @@ module.exports = {
                                       app.globalData.user_company = data.data.user.user_company;
                                       app.globalData.user_name = data.data.user.user_name;
                                       app.globalData.user_phone = data.data.user.mobile;
-                                        try {
+                                      try {
                                             wx.setStorageSync('login', '1');
                                             wx.setStorageSync('token', data.data.token);
                                             wx.setStorageSync('openId', data.data.openid);
                                             wx.setStorageSync('user', data.data.user);
-                                        } catch (e) {
-                                        }
+                                      } catch (e) {
+                                      }
                                       console.log(app.globalData);
                                       if (app.globalData.user_company == undefined || app.globalData.user_name == undefined || app.globalData.user_phone == undefined || app.globalData.user_company == '' || app.globalData.user_name == '' || app.globalData.user_phone == ''){
 
@@ -164,25 +168,25 @@ module.exports = {
                                     tryingLogin = false;
                                 }
                             });
-                        },
-                        fail: (res) => {
-                            console.log(res);
-                            tryingLogin = false;
-                            if (res.errMsg == "getUserInfo:cancel" || res.errMsg == "getUserInfo:fail auth deny") {
-                                wx.showModal({
-                                    title: '用户授权失败',
-                                    showCancel: false,
-                                    content: '请删除此小程序重新授权!',
-                                    success: function (res) {
-                                        if (res.confirm) {
-                                            console.log('用户点击确定')
-                                        }
-                                    }
-                                });
-                            }
+                        // },
+                        // fail: (res) => {
+                        //     console.log(res);
+                        //     tryingLogin = false;
+                        //     if (res.errMsg == "getUserInfo:cancel" || res.errMsg == "getUserInfo:fail auth deny") {
+                        //         wx.showModal({
+                        //             title: '用户授权失败',
+                        //             showCancel: false,
+                        //             content: '请删除此小程序重新授权!',
+                        //             success: function (res) {
+                        //                 if (res.confirm) {
+                        //                     console.log('用户点击确定')
+                        //                 }
+                        //             }
+                        //         });
+                        //     }
 
-                        }
-                    });
+                        // }
+                    // });
 
 
                 } else {
@@ -193,7 +197,61 @@ module.exports = {
                 tryingLogin = false;
             }
         });
-      }
+        } else if (userinfo != undefined && app.globalData.userInfo == null){
+          app.globalData.userInfo = userinfo;
+          this.post({
+            url: '/wxapp/public/login',
+            data: {
+              is_code: 0,
+              nickName: userinfo.nickName,
+              gender: userinfo.gender,
+              avatarUrl: userinfo.avatarUrl,
+              city: userinfo.city,
+              openid: openId
+            },
+            success: data => {
+              console.log(data);
+              if (data.code == 1) {
+                wx.showToast({
+                  title: '登录成功',
+                  icon: 'success',
+                  duration: 1000
+                });
+                app.globalData.user_company = data.data.user.user_company;
+                app.globalData.user_name = data.data.user.user_name;
+                app.globalData.user_phone = data.data.user.mobile;
+                try {
+                  wx.setStorageSync('login', '1');
+                  wx.setStorageSync('user', data.data.user);
+                } catch (e) {
+                }
+                console.log(app.globalData);
+                if (app.globalData.user_company == undefined || app.globalData.user_name == undefined || app.globalData.user_phone == undefined || app.globalData.user_company == '' || app.globalData.user_name == '' || app.globalData.user_phone == '') {
+
+                  app.one_step = false;
+                  app.two_step = true;
+                  wx.navigateTo({
+                    url: '/pages/login/login'
+                  });
+                } else {
+                  setTimeout(function () {
+                    wx.switchTab({
+                      url: '/pages/index/index',
+                      success: res => {
+                        //getCurrentPages()[0].onPullDownRefresh()
+                      }
+                    });
+                  }, 1000);
+                }
+              }
+
+            },
+            complete: () => {
+              tryingLogin = false;
+            }
+          });
+        }
+      
     },
     uploadFile(options) {
 

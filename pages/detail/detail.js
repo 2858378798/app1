@@ -10,7 +10,7 @@ Page({
   /**
    * 页面名称
    */
-  name: "日本姬弹簧草",
+  name: "SE Audiotechnik",
   /**
    * 页面的初始数据
    */
@@ -42,10 +42,12 @@ Page({
       })
     }
     var id = getApp().requestId;
+    console.log(id);
     var that = this;
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     wx.request({
-      url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/read?id='+id,
+      url: app.globalData.host + '/public/api/portal/products/read?id=' + id + '&openid=' + openId,
       header: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -54,7 +56,14 @@ Page({
       },
       success: function (res) {
         console.log(res);
-        
+        if(res.data.data == ''){
+          wx.showModal({
+            title: res.data.msg,
+            showCancel: false,
+            content: '',
+          });
+          wx.navigateBack({ changed: true });
+        }
         var like_icon = '';
         var favorite_icon = '';
         if (res.data.data.is_like == 1){
@@ -66,6 +75,9 @@ Page({
           favorite_icon = '../../images/shouc-fill.png';
         } else {
           favorite_icon = '../../images/shouc.png';
+        }
+        if (res.data.data.more.thumbnail == undefined || res.data.data.more.thumbnail == null){
+          res.data.data.more.thumbnail = '';
         }
         that.setData({
           'title': res.data.data.post_title,
@@ -129,8 +141,9 @@ Page({
     var id = getApp().requestId;
     var that = this;
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     wx.request({
-      url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/read?id=' + id, //仅为示例，并非真实的接口地址
+      url: app.globalData.host + '/public/api/portal/products/read?id=' + id + '&openid=' + openId, //仅为示例，并非真实的接口地址
       header: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -175,10 +188,11 @@ Page({
     var id_type = e.target.dataset.type;
     var id = e.currentTarget.id;
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     if (parseInt(id_type) == 0) {
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/doLike?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/doLike?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -198,7 +212,7 @@ Page({
     } else {
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/cancelLike?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/cancelLike?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -221,11 +235,12 @@ Page({
     var id_type = e.target.dataset.type;
     var id = e.currentTarget.id;
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     console.log(token);
     if (parseInt(id_type) == 1) {
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/cancelFavorite?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/cancelFavorite?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -245,7 +260,7 @@ Page({
     } else {
       var that = this;
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/doFavorite?id=' + id,
+        url: app.globalData.host + '/public/api/portal/products/doFavorite?id=' + id + '&openid=' + openId,
         header: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -266,10 +281,11 @@ Page({
   },
   doView:function(){
     var token = (wx.getStorageSync('token'));
+    var openId = (wx.getStorageSync('openId'));
     var id = getApp().requestId;
     var that = this;
     wx.request({
-      url: 'https://wechat.se-audiotechnik.pro/public/api/portal/products/doView?id=' + id,
+      url: app.globalData.host + '/public/api/portal/products/doView?id=' + id + '&openid=' + openId,
       header: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded',

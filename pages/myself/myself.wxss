@@ -4,15 +4,15 @@
 }
 .userinfo {
   display: flex;
-  flex-direction: column;
   padding: 10rpx 0;
-  align-items: center;
+  align-items: left;
   background: #141414;
+  
 }
 .userinfo-avatar {
   width: 128rpx;
   height: 128rpx;
-  margin: 48rpx 20rpx 20rpx;
+  margin: 32rpx 30rpx 20rpx;
   border-radius: 50%
 }
 .info_list{
@@ -62,7 +62,8 @@
   background-size: 100% 100%;
 }
 .usName{
-  margin-top: 4px;
+  margin-top: 62px;
+  margin-left:0px;
   font-size: 14px;
 }
 .usRegin{

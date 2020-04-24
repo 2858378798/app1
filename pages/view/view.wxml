@@ -11,7 +11,7 @@
 <view class="IndexList">
   <view bindtap="callmeTap">
     <image src="../../image/tel.png" class="telIco" mode="widthFix"></image>
-    <text class="tel" bindtap="teltoUs" style="font-size:30rpx;">电话：{{tel}}（点击拨号）</text>
+    <text class="tel" bindtap="teltoUs" data-tel="{{tel}}" style="font-size:30rpx;">电话：{{tel}}（点击拨号）</text>
   </view>
   <view>
     <image src="../../image/weixin.png" class="weixinIco" mode="widthFix"></image>
@@ -21,12 +21,34 @@
     <image src="../../image/email.png" class="eIco" mode="widthFix"></image>
     <text class="email" style="font-size:30rpx;">公众号：laosan0070@163.com </text>
   </view-->
-  <view>
-    <image src="../../image/map.png" class="mapIco" mode="widthFix"></image>
+  <view style="display:flex;flex-direction: row;justify-content:flex-start;">
+    <image src="../../image/map.png" class="mapIco" mode="widthFix" style="padding-top:13px;"></image>
+    <view style='line-height:19px;border-bottom:0px;margin:0;'>
     <text class="map" bindtap="" style="font-size:30rpx;">{{address}}</text>
+    </view>
   </view>
+  <view bindtap='showTeam'>
+    <image src="../../images/account.png" class="weixinIco" mode="widthFix"></image>
+    <text class="map" style="font-size:30rpx;">销售团队（{{textTeam}}）</text>
+  </view>
+  <block wx:if="{{showTeam}}">
+    <view wx:for="{{sellerTeam}}" wx:for-itme="item" wx:key="key" style="padding-left:14px;padding-bottom:10px;">
+    <block  wx:if="{{item.tel}}" >
+    <view style="border-bottom:0;line-height:40rpx;margin-top:12px;">
+      <image src="../../image/tel.png" class="telIco" mode="widthFix"></image>
+      <text  class="tel" bindtap="teltoUs" data-tel="{{item.tel}}" style="font-size:30rpx;">{{item.name}}：{{item.tel}}</text>
+      </view>
+      <!--text class="tel" bindtap="teltoUs" data-tel="{{item.tel}}" style="font-size:30rpx;margin:0 0 0 1%;line-height:30rpx;">负责区域：{{item.area}}</text-->
+      <view style='line-height:19px;border-bottom:0px;margin:0;'>
+        <text class="map" bindtap="" style="font-size:30rpx;margin:0 0 0 1%;">负责区域：{{item.area}}</text>
+      </view>
+      </block>
+    </view>
+  </block>
+  <button open-type="contact" style="width:50%;margin-top:1rem;font-size：14px;border-right:1px solid #dadada;">客服中心</button>
+  
   <view  class="IndexHome" data-type="公众号" style="margin-top:46rpx;">
-        <image mode="widthFix" src="{{qrcode}}" style="width:50%;"></image>
+        <image mode="widthFix" src="{{qrcode}}" style="width:50%;"/>
         <view  style="text-align:center;border-bottom:none;line-height:18px;font-size:28rpx;">公众号二维码</view>
   </view>
 </view>

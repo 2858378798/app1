@@ -1,6 +1,6 @@
 <import src="../../wxParse/wxParse.wxml"/> 
 <view class="wx-view_KHAWVZ" data-c_e_id="wx_viewb7dbd52e">
-    <swiper autoplay="True" class="wx-swiper_Mn3JMs" data-c_e_id="wx_swiper43d9f094" indicator-dots="True" lower-threshold="50">
+    <swiper autoplay="True" class="wx-swiper_Mn3JMs" data-c_e_id="wx_swiper43d9f094" indicator-dots="True" lower-threshold="50" style="border-bottom:1px solid #ccc;">
         <swiper-item class="c-full wx-swiper-item_F6vCx8" data-c_e_id="wx_swiper_item015a5cd2">
             <image class="wx-image_HsAX8s2" data-c_e_id="wx_image194006a3" mode="aspectFill" src="{{cover_img}}" style="background-image: url({{cover_img}}); background-size: cover; background-position: center center; background-repeat: no-repeat; "/>
         </swiper-item>

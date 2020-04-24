@@ -32,7 +32,7 @@ Page({
   onLoad: function () {
     var openId = (wx.getStorageSync('openId'));
     var that = this;
-    if (app.globalData.userInfo == null || !openId) {
+    if (!openId || app.globalData.userInfo == null) {
       that.setData({
         title: '用户登陆',
         one_step: true,
@@ -47,12 +47,15 @@ Page({
       })
     }
     if (app.globalData.userInfo != null && openId){
+      console.log('通过php获取用户信息');
+      console.log(app.globalData.host + '/public/api/wxapp/public/getinfo?openid=' + openId);
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/wxapp/public/getinfo?openid=' + openId,
+        url: app.globalData.host+'/public/api/wxapp/public/getinfo?openid=' + openId,
         header: {
           "Content-Type": "application/json"
         },
         success: function (res) {
+          console.log('通过php获取用户信息结果');
           console.log(res);
           if (res.data.code == 1) {
             app.user_phone = res.data.data.mobile;
@@ -71,15 +74,16 @@ Page({
     app.globalData.requestTableName = '';
     app.doView();
   },
-  // bindGetUserInfo(e) {
-  //   console.log(e.detail.userInfo)
-  //  },
-  handleGetUserInfo() {
+  handleGetUserInfo(e) {
+    console.log(e.detail.errMsg)
+    console.log(e.detail.userInfo)
     var openId = (wx.getStorageSync('openId'));
     var that = this;
+    console.log(app.globalData.userInfo);
+    console.log(openId);
     if (app.globalData.userInfo != null && openId){
       wx.request({
-        url: 'https://wechat.se-audiotechnik.pro/public/api/wxapp/public/profile', 
+        url: app.globalData.host+'/public/api/wxapp/public/profile', 
         data: {
           openid: openId,
           phone: app.user_phone,
@@ -116,7 +120,7 @@ Page({
         }
       })
     }else{
-      api.login();
+      api.login(e.detail.userInfo);
     }
     
   },
